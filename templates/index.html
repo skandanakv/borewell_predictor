@@ -1,0 +1,161 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Borewell Groundwater Prediction</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            padding: 20px;
+        }
+        input {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        button {
+            padding: 10px 20px;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        canvas {
+            margin-top: 40px;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Borewell Prediction System</h1>
+
+    <form method="POST">
+        {% for feature in features %}
+            <label>{{ feature }}</label><br>
+            <input type="number" step="any" name="{{ feature }}" required><br>
+        {% endfor %}
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction %}
+        <div class="result">
+            <p><strong>Predicted Extraction:</strong> {{ prediction }}</p>
+            <p><strong>Decision:</strong> {{ decision }}</p>
+        </div>
+    {% endif %}
+
+    {% if chart_data %}
+        <canvas id="predictionChart"></canvas>
+        <script>
+            const chartValues = JSON.parse('{{ chart_data | tojson | safe }}');
+            
+            const ctx = document.getElementById('predictionChart').getContext('2d');
+            const predictionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Predicted Extraction', 'Available Groundwater', 'Irrigation Use', 'Domestic Use'],
+                    datasets: [{
+                        label: 'Volume (units)',
+                        data: chartValues,
+                        backgroundColor: [
+                            '#007bff',
+                            '#28a745',
+                            '#ffc107',
+                            '#dc3545'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Volume'
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    {% endif %}
+</body>
+</html> -->
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Borewell Installation Predictor</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <h1>Borewell Installation Prediction</h1>
+
+    <form method="POST">
+        {% for feature in features %}
+            <label>{{ feature }}</label>
+            <input type="number" step="any" name="{{ feature }}" required>
+        {% endfor %}
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction %}
+    <div class="result">
+        <h2>Predicted Extraction: {{ prediction }}</h2>
+        <h3>{{ decision }}</h3>
+    </div>
+    {% endif %}
+
+    {% if chart_data %}
+    <div class="chart">
+        <h3>Usage Breakdown</h3>
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <script>
+        const chartLabels = Object.keys(JSON.parse('{{ chart_data | tojson | safe }}'));
+        const chartValues = Object.values(JSON.parse('{{ chart_data | tojson | safe }}'));
+
+        const ctx = document.getElementById('barChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Groundwater (in units)',
+                    data: chartValues,
+                    backgroundColor: ['#007BFF', '#28A745', '#FFC107', '#DC3545']
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+    {% endif %}
+
+    <!-- {% if plot_path %}
+    <h3>Prediction Chart</h3>
+    <img src="{{ url_for('static', filename=plot_path) }}" alt="Prediction Chart">
+  {% endif %} -->
+  
+
+</body>
+</html>
